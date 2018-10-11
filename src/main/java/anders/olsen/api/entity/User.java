@@ -19,7 +19,14 @@ import java.util.Set;
  * @author Anders Engen Olsen
  */
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "username"
+        }),
+        @UniqueConstraint(columnNames = {
+                "email"
+        })
+})
 public class User extends CreatedUpdatedAudit {
 
     @Id

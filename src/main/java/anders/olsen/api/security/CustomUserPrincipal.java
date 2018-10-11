@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
  * Spring Security will thus use information stored in this class
  * to perform authentication and authorization.
  */
-// TODO : Create CustomUserDetailsService!
 public class CustomUserPrincipal implements UserDetails {
 
     private Long id;
@@ -38,9 +37,9 @@ public class CustomUserPrincipal implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserPrincipal(Long id, String firstName, String lastName,
-                               String username, String email,
-                               String password, Collection<? extends GrantedAuthority> authorities) {
+    private CustomUserPrincipal(Long id, String firstName, String lastName,
+                                String username, String email,
+                                String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,7 +49,13 @@ public class CustomUserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static CustomUserPrincipal create(User user) {
+    /**
+     * Creating a CustomUserPrincipal object from a {@link User}
+     *
+     * @param user {@link User}
+     * @return CustomUserPrincipal converted from User
+     */
+    static CustomUserPrincipal create(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
                 new SimpleGrantedAuthority(role.getName().name())
         ).collect(Collectors.toList());

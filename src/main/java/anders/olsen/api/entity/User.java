@@ -24,7 +24,7 @@ public class User extends CreatedUpdatedAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotBlank
     @Size(max = 30)
@@ -83,11 +83,11 @@ public class User extends CreatedUpdatedAudit {
 
     /* -- GETTERS & SETTERS -- */
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

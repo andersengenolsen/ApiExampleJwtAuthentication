@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>api</name>
+    <firstName>api</firstName>
     <description>API with authentication</description>
 
     <parent>
@@ -84,7 +84,7 @@
     <repositories>
         <repository>
             <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
+            <firstName>Spring Snapshots</firstName>
             <url>https://repo.spring.io/snapshot</url>
             <snapshots>
                 <enabled>true</enabled>
@@ -92,7 +92,7 @@
         </repository>
         <repository>
             <id>spring-milestones</id>
-            <name>Spring Milestones</name>
+            <firstName>Spring Milestones</firstName>
             <url>https://repo.spring.io/milestone</url>
             <snapshots>
                 <enabled>false</enabled>
@@ -103,7 +103,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
+            <firstName>Spring Snapshots</firstName>
             <url>https://repo.spring.io/snapshot</url>
             <snapshots>
                 <enabled>true</enabled>
@@ -111,7 +111,7 @@
         </pluginRepository>
         <pluginRepository>
             <id>spring-milestones</id>
-            <name>Spring Milestones</name>
+            <firstName>Spring Milestones</firstName>
             <url>https://repo.spring.io/milestone</url>
             <snapshots>
                 <enabled>false</enabled>

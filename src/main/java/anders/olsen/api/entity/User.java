@@ -55,7 +55,7 @@ public class User extends CreatedUpdatedAudit {
     private String username;
 
     @NotBlank
-    @Size(max = 30)
+    @Size(max = 100)
     private String password;
 
     /**
@@ -80,7 +80,7 @@ public class User extends CreatedUpdatedAudit {
                 @NotBlank @Size(max = 30) String lastName,
                 @NotBlank @Size(max = 30) @Email String email,
                 @NotBlank @Size(max = 15) String username,
-                @NotBlank @Size(max = 30) String password) {
+                @NotBlank @Size(max = 100) String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

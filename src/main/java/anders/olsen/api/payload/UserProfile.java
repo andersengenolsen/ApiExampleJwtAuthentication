@@ -12,19 +12,15 @@ public class UserProfile {
     private String firstName;
     private String lastName;
     private Instant joinedAt;
-    private Long pollCount;
-    private Long voteCount;
 
+    // TODO: Implement builder pattern!
     public UserProfile(Long id, String username, String firstName,
-                       String lastName, Instant joinedAt,
-                       Long pollCount, Long voteCount) {
+                       String lastName, Instant joinedAt) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.joinedAt = joinedAt;
-        this.pollCount = pollCount;
-        this.voteCount = voteCount;
     }
 
     public String getLastName() {
@@ -65,21 +61,5 @@ public class UserProfile {
 
     public void setJoinedAt(Instant joinedAt) {
         this.joinedAt = joinedAt;
-    }
-
-    public Long getPollCount() {
-        return pollCount;
-    }
-
-    public void setPollCount(Long pollCount) {
-        this.pollCount = pollCount;
-    }
-
-    public Long getVoteCount() {
-        return voteCount;
-    }
-
-    public void setVoteCount(Long voteCount) {
-        this.voteCount = voteCount;
     }
 }

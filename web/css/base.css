@@ -1,0 +1,96 @@
+/*
+COLOR SCHEME:
+
+JET: #333
+VIOLET: #7F5A83
+OPERA: #A188A6
+MANATEE: #9DA2AB
+FROST: #669BBC
+
+
+*/ 
+
+/* -- Primary styling -- */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: rgba(157, 162, 171, 0.2);
+}
+
+
+/* -- Color styling -- */
+.btn-primary {
+    background-color: #669BBC !important;
+}
+
+.btn-primary:hover {
+    background-color: #5B677D !important;
+}
+
+h1 {
+    color: #333;
+}
+
+/* -- Login form -- */
+.login-container {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login-module {
+    padding: 0 30px 30px 30px;
+    width: 70%;
+    border-radius: 10px;
+    box-shadow: 0px 10px 10px grey;
+    background: #FAFAFA;
+}
+
+/* -- Login / register choices -- */
+.login-module .choices {
+    text-align: center;
+    padding-top: 3px;
+    padding-bottom: 50px;
+}
+
+.login-module .choices p {
+    width: 50%;
+}
+
+.login-module .choices p span {
+    cursor: pointer;
+}
+
+.login-module .choices #register {
+    float: right;
+}
+
+.login-module .choices #login {
+    float: left;
+}
+
+.selected {
+    color: #669BBC;
+}
+
+/* -- Input and buttons in forms -- */
+
+.login-module button {
+    float: right;
+}
+
+.login-module input {
+    margin-bottom: 30px;
+}
+
+/* -- Specific for each form --*/
+#register-form {
+    display: none;
+}
+
+

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <link rel = "stylesheet" href = "css/base.css"/>
+        <!-- Main entry point in js/main.js -->
+        <script data-main = "js/main" src = "js/require.js"></script>
+        <title>Api Login</title>
+        <meta charset = "UTF-8" />
+    </head>
+
+    <body>
+
+        <div class = "container">
+
+            <!-- Login form container -->
+            <div class = "login-container">
+                <!-- Login module -->
+                <div class = "login-module border border-info">
+
+                    <!-- Login / register choices -->
+                    <div class = "choices">
+                        <p id = "login" class = "selected"><span>Login</span></p>
+                        <p id = "register"><span>Register</span></p>
+                    </div>
+
+                    <!-- LOGIN FORM -->
+                    <form id = "login-form">
+                        <!-- Username -->
+                        <div class = "form-group">
+                            <input type = "text" class = "form-control" id = "username" placeholder="Username or Email" name = "usernameOrEmail">
+                        </div>
+                        <!-- Password -->
+                        <div class = "form-group">
+                            <input type = "password" class = "form-control" id = "password" placeholder = "Password" name = "password">
+                        </div>
+                        <!-- Submit -->
+                        <button type = "submit" class = "btn btn-primary">Submit</button>
+                    </form>
+
+                    <!-- REGISTER FORM -->
+                    <form id = "register-form">
+                        <div class = "form-group">
+                            <input type = "text" class = "form-control" id = "username" placeholder = "Username" name = "username">
+                        </div>
+                        <div class = "form-group">
+                            <input type = "email" class = "form-control" id = "email" placeholder = "Email" name = "email">
+                        </div>
+                        <div class = "form-group">
+                            <input type = "text" class = "form-control" id = "firstname" placeholder = "First name" name = "firstName">
+                        </div>
+                        <div class = "form-group">
+                            <input type = "text" class = "form-control" id = "lastname" placeholder = "Last name" name = "lastName">
+                        </div>
+                        <div class = "form-group">
+                            <input type = "text" class = "form-control" id = "password" placeholder = "Password" name = "password">
+                        </div>
+                        <div class = "form-group">
+                            <input type = "text" class = "form-control" id = "passwordRep" placeholder = "Repeat password">
+                        </div>
+                        <!-- Submit -->
+                        <button type = "submit" class = "btn btn-primary">Submit</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

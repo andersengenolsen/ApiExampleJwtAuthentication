@@ -7,4 +7,4 @@ api.iml
 .mvn/
 mvnw
 mvnw.cmd
-/web/
+/web/bootstrap.min.css

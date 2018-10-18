@@ -2,8 +2,12 @@ package anders.olsen.api.controller;
 
 import anders.olsen.api.entity.User;
 import anders.olsen.api.payload.UserProfile;
+import anders.olsen.api.payload.UserSummary;
 import anders.olsen.api.repository.UserRepository;
+import anders.olsen.api.security.CurrentUser;
+import anders.olsen.api.security.CustomUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,12 +41,23 @@ public class UserController {
 
         User user = opt.get();
 
-        UserProfile profile = new UserProfile(user.getId(), user.getUsername(),
+        return new UserProfile(user.getUsername(),
                 user.getFirstName(), user.getLastName(),
                 user.getCreatedTime());
+    }
 
-        return profile;
-
+    /**
+     * Returning summary of currently logged in user.
+     *
+     * @param userPrincipal representation of user
+     * @return {@link UserSummary}
+     */
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('USER')")
+    public UserSummary getPrivateUser(@CurrentUser CustomUserPrincipal userPrincipal) {
+        return new UserSummary(userPrincipal.getId(), userPrincipal.getUsername(),
+                userPrincipal.getFirstName(), userPrincipal.getLastName(),
+                userPrincipal.getEmail());
     }
 
 

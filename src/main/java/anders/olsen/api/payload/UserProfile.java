@@ -7,16 +7,15 @@ import java.time.Instant;
  * Audit columns are included.
  */
 public class UserProfile {
-    private Long id;
+
     private String username;
     private String firstName;
     private String lastName;
     private Instant joinedAt;
 
     // TODO: Implement builder pattern!
-    public UserProfile(Long id, String username, String firstName,
+    public UserProfile(String username, String firstName,
                        String lastName, Instant joinedAt) {
-        this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,14 +28,6 @@ public class UserProfile {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {

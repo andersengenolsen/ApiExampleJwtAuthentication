@@ -14,6 +14,11 @@ public class JwtAuthResponse {
      */
     private String tokenType = "Bearer";
 
+    /**
+     * Http successful status
+     */
+    private int status = 200;
+
     public JwtAuthResponse(String accessToken) {
         this.accessToken = accessToken;
     }
@@ -32,6 +37,14 @@ public class JwtAuthResponse {
 
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
 

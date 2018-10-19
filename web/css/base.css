@@ -6,8 +6,6 @@ VIOLET: #7F5A83
 OPERA: #A188A6
 MANATEE: #9DA2AB
 FROST: #669BBC
-
-
 */ 
 
 /* -- Primary styling -- */
@@ -30,6 +28,10 @@ html, body {
 
 h1 {
     color: #333;
+}
+
+.container {
+    height: 100%;
 }
 
 /* -- Login form -- */
@@ -86,6 +88,11 @@ h1 {
 
 .login-module input {
     margin-bottom: 30px;
+}
+
+/* -- Error fields -- */
+#login-error, #reg-error, #reg-success {
+    display: none;
 }
 
 /* -- Specific for each form --*/

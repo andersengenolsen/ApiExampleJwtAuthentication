@@ -9,18 +9,27 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
         registerChoice: "#register",
         selectedChoice: ".choice",
         loginForm: "#login-form",
-        registerForm: "#register-form"
+        registerForm: "#register-form",
+        passwordRep: "#passwordRep",
+        regError: "#reg-error",
+        loginError: "#login-error",
+        regSuccess: "#reg-success"
     };
 
     // Login choice
     const loginCh = document.querySelector(DOMString.loginChoice);
     // Register choice
     const regCh = document.querySelector(DOMString.registerChoice);
-
     // Login form
-    let loginForm = document.querySelector(DOMString.loginForm);
+    const loginForm = document.querySelector(DOMString.loginForm);
     // Register form
-    let registerForm = document.querySelector(DOMString.registerForm);
+    const registerForm = document.querySelector(DOMString.registerForm);
+    // Password repeat field
+    const passwordRepeat = document.querySelector(DOMString.passwordRep);
+    // Registration and login error
+    const regError = document.querySelector(DOMString.regError);
+    const loginError = document.querySelector(DOMString.loginError);
+    const regSuccess = document.querySelector(DOMString.regSuccess);
 
     // Setting eventlisteners
     var setEventListeners = function() {
@@ -31,7 +40,6 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
             showElement(loginForm);
             hideElement(registerForm);
         });
-
         regCh.addEventListener("click", function() {
             switchSelected(regCh);
             showElement(registerForm);
@@ -49,30 +57,91 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
         });
     };
 
-    // Posting form data to the API.
+    /*
+     * Posting form data to the API.
+     * The form object decides which function it will call in the
+     * ApiController.
+     * 
+     * The provided callback method is #renderResult()
+     *
+     */
     var postData = function(form) {
         // FormData object
         const formData = new FormData(form);
 
+        let isLogin = (form === loginForm) ? true : false;
+        let errors = (isLogin) ? loginError : regError;
+
+        // Removing error field
+        hideElement(errors);
+
         // Converting to JSON
         let obj = {};
-        formData.forEach((value, key) => {
-            obj[key] = value; 
-        });
+        for(const keyvalue of formData.entries()) {
+            if(keyvalue[1].length < 2) {
+                errors.innerHTML = "Too short input";
+                showElement(errors);
+                return false;
+            }
+            obj[keyvalue[0]] = keyvalue[1];
+        }
+
         let json = JSON.stringify(obj);
 
-        if(form === loginForm)
-            ApiController.login(json, renderResult);
-        else
-            ApiController.register(json, renderResult);
+        if(isLogin)
+            ApiController.login(json, loginResult);
+        else {
+            // Verifying that password fields do match,
+            // returning if no match.
+            if(passwordRepeat.value !== obj["password"] ||
+               passwordRepeat.value.length === 0) {
+                errors.innerHTML = "Passwords must match!"
+                showElement(errors);
+                return;
+            }
+            // Passing data to the api controller.            
+            ApiController.register(json, registerResult);
+        }
     };
 
-    // Rendering result for calls against the api
-    var renderResult = function(data, success = false) {
-        if(data["status"] != 200) {
-            console.log(data["message"]);
+    /*
+     * Callback method for the ApiController.
+     * Showing error message from login operation,
+     * or logging user in.
+     */
+    var loginResult = function(data, success = false) {
+        if(data === undefined) {
+            loginError.innerHTML = "Network error occurred";
+            showElement(loginError);
+        }
+        else if(data["status"] != 200) {
+            loginError.innerHTML = data["message"];
+            showElement(loginError);
         } else {
-            console.log(data["message"]);
+            // Can now extract the JWT bearer token, and
+            // redirect the user to the users home page!
+            localStorage.setItem("token",data["accessToken"]);
+            console.log(localStorage.getItem("token"));
+            window.location.href = "user.html";
+        }
+    }
+
+    /*
+     * Callback method for the API calls. This method is passed to the
+     * ApiController, and called when the API call is finished.
+     * Showing error message from register operation, or registering user.
+     */
+    var registerResult = function(data, success = false) {
+        if(data === undefined) {
+            regError.innerHTML = "Network error occurred";
+            showElement(regError);
+        }
+        else if(data["status"] != 200) {
+            regError.innerHTML = data["message"];
+            showElement(regError);
+        } else {
+            hideElement(regError);
+            showElement(regSuccess);
         }
     }
 

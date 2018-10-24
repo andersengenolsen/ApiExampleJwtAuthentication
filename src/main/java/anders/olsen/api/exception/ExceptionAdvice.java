@@ -3,6 +3,7 @@ package anders.olsen.api.exception;
 import anders.olsen.api.payload.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -61,4 +62,14 @@ public class ExceptionAdvice {
         );
     }
 
+    /**
+     * @return {@link ApiResponse} when {@link HttpMessageNotReadableException} is thrown
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse> httpNotReadable() {
+        return new ResponseEntity<>(
+                new ApiResponse(false, "Invalid JSON", HttpServletResponse.SC_BAD_REQUEST),
+                HttpStatus.BAD_REQUEST
+        );
+    }
 }

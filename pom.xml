@@ -70,6 +70,12 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -84,7 +90,7 @@
     <repositories>
         <repository>
             <id>spring-snapshots</id>
-            <firstName>Spring Snapshots</firstName>
+            <name>Spring Snapshots</name>
             <url>https://repo.spring.io/snapshot</url>
             <snapshots>
                 <enabled>true</enabled>
@@ -92,7 +98,7 @@
         </repository>
         <repository>
             <id>spring-milestones</id>
-            <firstName>Spring Milestones</firstName>
+            <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
             <snapshots>
                 <enabled>false</enabled>
@@ -103,7 +109,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>spring-snapshots</id>
-            <firstName>Spring Snapshots</firstName>
+            <name>Spring Snapshots</name>
             <url>https://repo.spring.io/snapshot</url>
             <snapshots>
                 <enabled>true</enabled>
@@ -111,7 +117,7 @@
         </pluginRepository>
         <pluginRepository>
             <id>spring-milestones</id>
-            <firstName>Spring Milestones</firstName>
+            <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
             <snapshots>
                 <enabled>false</enabled>

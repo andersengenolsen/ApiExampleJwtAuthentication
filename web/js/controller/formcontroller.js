@@ -16,7 +16,8 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
         regError: "#reg-error",
         loginError: "#login-error",
         regSuccess: "#reg-success",
-        resetMessage: "#reset-msg"
+        resetMessage: "#reset-msg",
+        newPasswordMessage: "#new-password-msg"
     };
 
     // Login choice
@@ -84,8 +85,10 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
         }
 
         let json = JSON.stringify(obj);
-        console.log(json);
+        
+        ApiController.postNewPassword(json, processNewPasswordResult);
     };
+    
 
     /*
      * Posting reset password request through ApiController.
@@ -168,7 +171,6 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
             // Can now extract the JWT bearer token, and
             // redirect the user to the users home page!
             localStorage.setItem("token",data["accessToken"]);
-            console.log(localStorage.getItem("token"));
             window.location.href = "user.html";
         }
     }
@@ -193,11 +195,10 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
     }
 
     /**
-     * Callback method for requests to reset password.
+     * Callback method for requests to reset password token. 
      *
      */
     var processResetResult = function(data, success = false) {
-
         if(data == undefined) {
             resetMessage.innerHTML = "Network error occurred";
             showElement(resetMessage);
@@ -210,6 +211,22 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
         }
 
     };
+    
+    /**
+     * Callback for when password has been changed.
+     *
+     */
+    var processNewPasswordResult = function(data, success = false) {
+        let msg = document.querySelector(DOMString.newPasswordMessage);
+        
+        if(data == undefined) {
+            msg.innerHTML = "Network error occurred";
+        } else {
+            msg.innerHTML = data["message"];
+        }
+        showElement(msg);
+    }
+    
 
     // Hiding provided element, adding display none if no parameter provided
     var hideElement = function(el, value = "none") {

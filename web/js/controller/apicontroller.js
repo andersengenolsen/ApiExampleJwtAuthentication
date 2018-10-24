@@ -11,7 +11,8 @@ define(function() {
     const signUp = "auth/signup";
     const signin = "auth/signin";
     const reset = "reset";
-    
+    const newPass = "reset/newpassword"
+
     /* -- JSON -- */
     const contentType = "Content-Type";
     const contentVal = "application/json";
@@ -62,11 +63,35 @@ define(function() {
                 let response = JSON.parse(req.responseText);
                 callback(response, true);
             };
-            
+
         } catch(error) {
             callback(undefined, false);
         }
     };
+
+    /*
+     *
+     * Posting new password.
+     *
+     */
+    var postNewPassword = function(json, callback) {
+        try {
+            var req = new XMLHttpRequest();
+
+            req.open("post", url + newPass, true);
+            req.setRequestHeader(contentType, contentVal, charSet);
+            console.log(json);
+            req.send(json);
+
+            req.onloadend = function() {
+                let response = JSON.parse(req.responseText);
+                callback(response, true);
+            };
+
+        } catch(error) {
+            callback(undefined, false);
+        }
+    }
 
     /*
      * Registering new user with a XMLHttpRequest, POST.
@@ -158,6 +183,13 @@ define(function() {
                 console.log("No callback method provided");
 
             requestReset(json, callback);
+        },
+
+        postNewPassword: function(json, callback) {
+            if(callback===undefined)
+                console.log("No callback method provided");
+
+            postNewPassword(json, callback);
         }
     };
 });

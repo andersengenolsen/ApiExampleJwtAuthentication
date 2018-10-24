@@ -42,6 +42,10 @@
                         <div class = "error float-left">
                             <p class = "text-danger" id = "login-error">Wrong login information</p>
                         </div>
+
+                        <!-- Forgot password -->
+                        <button type = "button" class = "btn btn-primary" data-toggle = "modal" data-target = "#forgotPasswordModal" id = "forgot">Forgot password</button>
+
                         <!-- Submit -->
                         <button type = "submit" class = "btn btn-primary">Submit</button>
                     </form>
@@ -71,12 +75,39 @@
                             <p class = "text-danger" id = "reg-error">Wrong input</p>
                             <p class = "text-success" id = "reg-success">Registered! You can now login!</p>
                         </div>
+
                         <!-- Submit -->
                         <button type = "submit" class = "btn btn-primary">Submit</button>
                     </form>
 
                 </div>
             </div>
+
+            <!-- Forgot password modal -->
+            <div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Forgot password</h5>
+                        </div>
+                        <div class="modal-body">
+                            <form id = "reset-password-form">
+
+                                <div class = "form-group">
+                                    <input type = "text" class = "form-control" id = "usernameOrEmail" name = "usernameOrEmail" placeholder="Username or email" required>
+                                </div>
+                                
+                                <div class = "float-left">
+                                    <p class = "text-info" id = "reset-msg"></p>
+                                </div>
+
+                                <button type = "submit" class = "btn btn-primary float-right">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </body>
 

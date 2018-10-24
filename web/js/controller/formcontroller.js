@@ -10,10 +10,12 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
         selectedChoice: ".choice",
         loginForm: "#login-form",
         registerForm: "#register-form",
+        resetPasswordForm: "#reset-password-form",
         passwordRep: "#passwordRep",
         regError: "#reg-error",
         loginError: "#login-error",
-        regSuccess: "#reg-success"
+        regSuccess: "#reg-success",
+        resetMessage: "#reset-msg"
     };
 
     // Login choice
@@ -24,12 +26,15 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
     const loginForm = document.querySelector(DOMString.loginForm);
     // Register form
     const registerForm = document.querySelector(DOMString.registerForm);
+    // Reset password form
+    const resetPasswordForm = document.querySelector(DOMString.resetPasswordForm);
     // Password repeat field
     const passwordRepeat = document.querySelector(DOMString.passwordRep);
     // Registration and login error
     const regError = document.querySelector(DOMString.regError);
     const loginError = document.querySelector(DOMString.loginError);
     const regSuccess = document.querySelector(DOMString.regSuccess);
+    const resetMessage = document.querySelector(DOMString.resetMessage);
 
     // Setting eventlisteners
     var setEventListeners = function() {
@@ -55,7 +60,31 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
             event.preventDefault();
             postData(registerForm);
         });
+        resetPasswordForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            postResetRequest(resetPasswordForm);
+        });
+
     };
+
+    /*
+     * Posting reset password request through ApiController.
+     * Callback handled in processResetResult
+     */
+    var postResetRequest = function(form) {
+        const formData = new FormData(form);
+
+        // Converting to JSON
+        let obj = {};
+        for(const keyvalue of formData.entries()) {
+            obj[keyvalue[0]] = keyvalue[1];
+        }
+
+        console.log(obj);
+
+        ApiController.requestReset(JSON.stringify(obj), processResetResult);
+    };
+
 
     /*
      * Posting form data to the API.
@@ -144,6 +173,21 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
             showElement(regSuccess);
         }
     }
+
+    /**
+     * Callback method for requests to reset password.
+     *
+     */
+    var processResetResult = function(data, success = false) {
+        if(data == undefined) {
+            resetMessage.innerHTML = "Network error occurred";
+        } else {
+            resetMessage.innerHTML = data["message"];
+        }
+
+        showElement(resetMessage);
+
+    };
 
     // Hiding provided element, adding display none if no parameter provided
     var hideElement = function(el, value = "none") {

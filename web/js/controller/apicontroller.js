@@ -6,11 +6,12 @@
 define(function() {
 
     /* -- URLS -- */
-    const url = "http://localhost:5000/api/auth/";
+    const url = "http://localhost:5000/api/";
     const urlUser = "http://localhost:5000/api/user/me"
-    const signUp = "signup";
-    const signin = "signin";
-
+    const signUp = "auth/signup";
+    const signin = "auth/signin";
+    const reset = "reset";
+    
     /* -- JSON -- */
     const contentType = "Content-Type";
     const contentVal = "application/json";
@@ -42,7 +43,30 @@ define(function() {
             let response = JSON.parse(req.responseText);
             callback(response);
         }
-    }
+    };
+
+    /*
+     * Sending request for password reset.
+     *
+     */
+    var requestReset = function(json, callback) {
+        try {
+            var req = new XMLHttpRequest();
+
+            req.open("post", url + reset, true);
+            req.setRequestHeader(contentType, contentVal, charSet);
+            console.log(json);
+            req.send(json);
+
+            req.onloadend = function() {
+                let response = JSON.parse(req.responseText);
+                callback(response, true);
+            };
+            
+        } catch(error) {
+            callback(undefined, false);
+        }
+    };
 
     /*
      * Registering new user with a XMLHttpRequest, POST.
@@ -123,6 +147,17 @@ define(function() {
                 console.log("No callback method provided!");
 
             currentUser(callback);
+        }, 
+
+        /**
+         *
+         * Requesting password reset.
+         */
+        requestReset: function(json, callback) {
+            if(callback===undefined)
+                console.log("No callback method provided");
+
+            requestReset(json, callback);
         }
     };
 });

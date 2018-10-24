@@ -80,6 +80,15 @@ h1 {
     color: #669BBC;
 }
 
+/* -- Forgot password -- */
+#forgot {
+    float: left;
+}
+
+#reset-msg {
+    display: none;
+}
+
 /* -- Input and buttons in forms -- */
 
 .login-module button {

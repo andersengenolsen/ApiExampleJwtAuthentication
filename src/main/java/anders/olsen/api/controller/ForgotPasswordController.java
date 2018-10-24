@@ -104,13 +104,11 @@ public class ForgotPasswordController {
      * <p>
      * Clearing the token after the reset action has been performed!
      *
-     * @param token         token generated in #generateResetToken()
      * @param resetPassword {@link ResetPassword}
      * @return 200 OK if reset
      */
-    @PostMapping("/{token}")
-    public ResponseEntity<?> updatePassword(@PathVariable(value = "token") String token,
-                                            @Valid @RequestBody ResetPassword resetPassword) {
+    @PostMapping("/newpassword")
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody ResetPassword resetPassword) {
 
         // Passwords not matching
         if (!resetPassword.getPassword().equals(resetPassword.getPasswordVerif()))
@@ -118,8 +116,7 @@ public class ForgotPasswordController {
                     "must match", HttpServletResponse.SC_BAD_REQUEST));
 
         // Fetching token and user
-        Optional<ResetToken> opt = tokenRepository.findByToken(token);
-
+        Optional<ResetToken> opt = tokenRepository.findByToken(resetPassword.getToken());
 
         // Invalid token, ie. user not found by token
         if (!opt.isPresent() || opt.get().getUser() == null)

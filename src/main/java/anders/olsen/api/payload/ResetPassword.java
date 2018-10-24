@@ -16,6 +16,9 @@ public class ResetPassword {
     @Size(min = 6, max = 15)
     private String passwordVerif;
 
+    @NotBlank
+    private String token;
+
     public String getPassword() {
         return password;
     }
@@ -30,5 +33,13 @@ public class ResetPassword {
 
     public void setPasswordVerif(String passwordVerif) {
         this.passwordVerif = passwordVerif;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -11,6 +11,7 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
         loginForm: "#login-form",
         registerForm: "#register-form",
         resetPasswordForm: "#reset-password-form",
+        newPasswordForm : "#new-password-form",
         passwordRep: "#passwordRep",
         regError: "#reg-error",
         loginError: "#login-error",
@@ -28,6 +29,8 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
     const registerForm = document.querySelector(DOMString.registerForm);
     // Reset password form
     const resetPasswordForm = document.querySelector(DOMString.resetPasswordForm);
+    // Set new password form
+    const newPasswordForm = document.querySelector(DOMString.newPasswordForm);
     // Password repeat field
     const passwordRepeat = document.querySelector(DOMString.passwordRep);
     // Registration and login error
@@ -64,7 +67,24 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
             event.preventDefault();
             postResetRequest(resetPasswordForm);
         });
+        newPasswordForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            postNewPassword(newPasswordForm);
+        });
 
+    };
+
+    var postNewPassword = function(form) {
+        const formData = new FormData(form);
+        
+        // Converting to JSON
+        let obj = {};
+        for(const keyvalue of formData.entries()) {
+            obj[keyvalue[0]] = keyvalue[1];
+        }
+
+        let json = JSON.stringify(obj);
+        console.log(json);
     };
 
     /*
@@ -79,8 +99,6 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
         for(const keyvalue of formData.entries()) {
             obj[keyvalue[0]] = keyvalue[1];
         }
-
-        console.log(obj);
 
         ApiController.requestReset(JSON.stringify(obj), processResetResult);
     };
@@ -179,13 +197,17 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
      *
      */
     var processResetResult = function(data, success = false) {
+
         if(data == undefined) {
             resetMessage.innerHTML = "Network error occurred";
-        } else {
+            showElement(resetMessage);
+        } else if(data["status"] != 200) {
             resetMessage.innerHTML = data["message"];
+            showElement(resetMessage);
+        } else {
+            $('#forgotPasswordModal').modal("hide");
+            $("#set-password-modal").modal("show");
         }
-
-        showElement(resetMessage);
 
     };
 

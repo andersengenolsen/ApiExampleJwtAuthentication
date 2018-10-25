@@ -1,94 +1,72 @@
 /* Controller for the forms */
-define(["model/loginrequest", "model/registerrequest", "controller/apicontroller"], function(
-       LoginRequest, RegisterRequest, ApiController) {
+define(["controller/apicontroller"], function(ApiController) {
 
     // Document Object Model strings.
     const DOMString = {
-        loginRegisterChoiceContainer: ".choices",
-        loginChoice: "#login",
-        registerChoice: "#register",
-        selectedChoice: ".choice",
-        loginForm: "#login-form",
-        registerForm: "#register-form",
-        resetPasswordForm: "#reset-password-form",
-        newPasswordForm : "#new-password-form",
-        passwordRep: "#passwordRep",
-        regError: "#reg-error",
-        loginError: "#login-error",
-        regSuccess: "#reg-success",
-        resetMessage: "#reset-msg",
-        newPasswordMessage: "#new-password-msg"
+        loginCh: document.querySelector("#login"),
+        regCh: document.querySelector("#register"),
+        loginForm: document.querySelector("#login-form"),
+        registerForm: document.querySelector("#register-form"),
+        resetTokenForm: document.querySelector("#reset-password-form"),
+        newPasswordForm : document.querySelector("#new-password-form"),
+        password: document.querySelector("#set-password"),
+        passwordRepeat: document.querySelector("#passwordRep"),
+        regError: document.querySelector("#reg-error"),
+        loginError: document.querySelector("#login-error"),
+        regSuccess: document.querySelector("#reg-success"),
+        resetMessage: document.querySelector("#reset-msg"),
+        newPasswordMessage: document.querySelector("#new-password-msg")
     };
-
-    // Login choice
-    const loginCh = document.querySelector(DOMString.loginChoice);
-    // Register choice
-    const regCh = document.querySelector(DOMString.registerChoice);
-    // Login form
-    const loginForm = document.querySelector(DOMString.loginForm);
-    // Register form
-    const registerForm = document.querySelector(DOMString.registerForm);
-    // Reset password form
-    const resetPasswordForm = document.querySelector(DOMString.resetPasswordForm);
-    // Set new password form
-    const newPasswordForm = document.querySelector(DOMString.newPasswordForm);
-    // Password repeat field
-    const passwordRepeat = document.querySelector(DOMString.passwordRep);
-    // Registration and login error
-    const regError = document.querySelector(DOMString.regError);
-    const loginError = document.querySelector(DOMString.loginError);
-    const regSuccess = document.querySelector(DOMString.regSuccess);
-    const resetMessage = document.querySelector(DOMString.resetMessage);
 
     // Setting eventlisteners
     var setEventListeners = function() {
 
         // Event listener for choices, login / register
-        loginCh.addEventListener("click", function() {
-            switchSelected(loginCh);
-            showElement(loginForm);
-            hideElement(registerForm);
+        DOMString.loginCh.addEventListener("click", function() {
+            switchSelected(DOMString.loginCh);
+            showElement(DOMString.loginForm);
+            hideElement(DOMString.registerForm);
         });
-        regCh.addEventListener("click", function() {
-            switchSelected(regCh);
-            showElement(registerForm);
-            hideElement(loginForm);
+        DOMString.regCh.addEventListener("click", function() {
+            switchSelected(DOMString.regCh);
+            showElement(DOMString.registerForm);
+            hideElement(DOMString.loginForm);
         });
 
         // Form listeners
-        loginForm.addEventListener("submit", function (event) {
+        DOMString.loginForm.addEventListener("submit", function (event) {
             event.preventDefault();
-            postData(loginForm);
+            postData(DOMString.loginForm);
         });
-        registerForm.addEventListener("submit", function (event) {
+        DOMString.registerForm.addEventListener("submit", function (event) {
             event.preventDefault();
-            postData(registerForm);
+            postData(DOMString.registerForm);
         });
-        resetPasswordForm.addEventListener("submit", function(event) {
+        DOMString.resetTokenForm.addEventListener("submit", function(event) {
             event.preventDefault();
-            postResetRequest(resetPasswordForm);
+            postResetRequest(DOMString.resetTokenForm);
         });
-        newPasswordForm.addEventListener("submit", function(event) {
+        DOMString.newPasswordForm.addEventListener("submit", function(event) {
             event.preventDefault();
-            postNewPassword(newPasswordForm);
+            postNewPassword(DOMString.newPasswordForm);
         });
 
     };
 
+    /**
+     * Posting new password to the API. 
+     * Callback handled in processNewPasswordResult.
+     *
+     '
+     */
     var postNewPassword = function(form) {
-        const formData = new FormData(form);
-        
-        // Converting to JSON
-        let obj = {};
-        for(const keyvalue of formData.entries()) {
-            obj[keyvalue[0]] = keyvalue[1];
-        }
 
-        let json = JSON.stringify(obj);
-        
+        const formData = new FormData(form);
+        let json = formDataToJson(formData);
+
         ApiController.postNewPassword(json, processNewPasswordResult);
     };
-    
+
 
     /*
      * Posting reset password request through ApiController.
@@ -96,14 +74,10 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
      */
     var postResetRequest = function(form) {
         const formData = new FormData(form);
-
         // Converting to JSON
-        let obj = {};
-        for(const keyvalue of formData.entries()) {
-            obj[keyvalue[0]] = keyvalue[1];
-        }
+        let json = formDataToJson(formData);
 
-        ApiController.requestReset(JSON.stringify(obj), processResetResult);
+        ApiController.requestReset(json, processResetResult);
     };
 
 
@@ -116,35 +90,24 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
      *
      */
     var postData = function(form) {
-        // FormData object
-        const formData = new FormData(form);
 
-        let isLogin = (form === loginForm) ? true : false;
-        let errors = (isLogin) ? loginError : regError;
+        let isLogin = (form === DOMString.loginForm) ? true : false;
+        let errors = (isLogin) ? DOMString.loginError : DOMString.regError;
 
         // Removing error field
         hideElement(errors);
 
-        // Converting to JSON
-        let obj = {};
-        for(const keyvalue of formData.entries()) {
-            if(keyvalue[1].length < 2) {
-                errors.innerHTML = "Too short input";
-                showElement(errors);
-                return false;
-            }
-            obj[keyvalue[0]] = keyvalue[1];
-        }
-
-        let json = JSON.stringify(obj);
+        // FormData object
+        const formData = new FormData(form);
+        let json = formDataToJson(formData);
 
         if(isLogin)
             ApiController.login(json, loginResult);
         else {
             // Verifying that password fields do match,
             // returning if no match.
-            if(passwordRepeat.value !== obj["password"] ||
-               passwordRepeat.value.length === 0) {
+            if(DOMString.passwordRepeat.value !== DOMString.password.value ||
+               DOMString.passwordRepeat.value.length === 0) {
                 errors.innerHTML = "Passwords must match!"
                 showElement(errors);
                 return;
@@ -161,12 +124,12 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
      */
     var loginResult = function(data, success = false) {
         if(data === undefined) {
-            loginError.innerHTML = "Network error occurred";
-            showElement(loginError);
+            DOMString.loginError.innerHTML = "Network error occurred";
+            showElement(DOMString.loginError);
         }
         else if(data["status"] != 200) {
-            loginError.innerHTML = data["message"];
-            showElement(loginError);
+            DOMString.loginError.innerHTML = data["message"];
+            showElement(DOMString.loginError);
         } else {
             // Can now extract the JWT bearer token, and
             // redirect the user to the users home page!
@@ -182,15 +145,15 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
      */
     var registerResult = function(data, success = false) {
         if(data === undefined) {
-            regError.innerHTML = "Network error occurred";
+            DOMString.regError.innerHTML = "Network error occurred";
             showElement(regError);
         }
         else if(data["status"] != 200) {
-            regError.innerHTML = data["message"];
+            DOMString.regError.innerHTML = data["message"];
             showElement(regError);
         } else {
-            hideElement(regError);
-            showElement(regSuccess);
+            hideElement(DOMString.regError);
+            showElement(DOMString.regSuccess);
         }
     }
 
@@ -200,33 +163,45 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
      */
     var processResetResult = function(data, success = false) {
         if(data == undefined) {
-            resetMessage.innerHTML = "Network error occurred";
-            showElement(resetMessage);
+            DOMString.resetMessage.innerHTML = "Network error occurred";
+            showElement(DOMString.resetMessage);
         } else if(data["status"] != 200) {
-            resetMessage.innerHTML = data["message"];
-            showElement(resetMessage);
+            DOMString.resetMessage.innerHTML = data["message"];
+            showElement(DOMString.resetMessage);
         } else {
             $('#forgotPasswordModal').modal("hide");
             $("#set-password-modal").modal("show");
         }
 
     };
-    
+
     /**
      * Callback for when password has been changed.
      *
      */
     var processNewPasswordResult = function(data, success = false) {
-        let msg = document.querySelector(DOMString.newPasswordMessage);
-        
         if(data == undefined) {
-            msg.innerHTML = "Network error occurred";
+            DOMString.newPasswordMessage.innerHTML = "Network error occurred";
         } else {
-            msg.innerHTML = data["message"];
+            DOMString.newPasswordMessage.innerHTML = data["message"];
         }
-        showElement(msg);
+        showElement(DOMString.newPasswordMessage);
     }
-    
+
+    /*
+     * Helper method, converting FormData JSON.
+     *
+     */
+    var formDataToJson = function(formData) {
+        // Converting to JSON
+        let obj = {};
+        for(const keyvalue of formData.entries()) {
+            obj[keyvalue[0]] = keyvalue[1];
+        }
+
+        return JSON.stringify(obj);
+    };
+
 
     // Hiding provided element, adding display none if no parameter provided
     var hideElement = function(el, value = "none") {
@@ -240,12 +215,12 @@ define(["model/loginrequest", "model/registerrequest", "controller/apicontroller
 
     // Switching class of currently selected option, login / register
     var switchSelected = function(currentlySelected) {
-        if(currentlySelected === loginCh) {
-            loginCh.classList.add("selected");
-            regCh.classList.remove("selected");
+        if(currentlySelected === DOMString.loginCh) {
+            DOMString.loginCh.classList.add("selected");
+            DOMString.regCh.classList.remove("selected");
         } else {
-            regCh.classList.add("selected");
-            loginCh.classList.remove("selected");
+            DOMString.regCh.classList.add("selected");
+            DOMString.loginCh.classList.remove("selected");
         }
     };
 

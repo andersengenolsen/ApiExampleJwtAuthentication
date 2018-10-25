@@ -56,7 +56,6 @@ define(function() {
 
             req.open("post", url + reset, true);
             req.setRequestHeader(contentType, contentVal, charSet);
-            console.log(json);
             req.send(json);
 
             req.onloadend = function() {
@@ -80,7 +79,6 @@ define(function() {
 
             req.open("post", url + newPass, true);
             req.setRequestHeader(contentType, contentVal, charSet);
-            console.log(json);
             req.send(json);
 
             req.onloadend = function() {

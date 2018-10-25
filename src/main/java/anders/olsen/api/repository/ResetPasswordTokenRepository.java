@@ -6,8 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repo for accessing reset password tokens.
+ *
+ * {@link ResetToken}
+ */
 @Repository
-public interface TokenRepository extends JpaRepository<ResetToken, Long> {
+public interface ResetPasswordTokenRepository extends JpaRepository<ResetToken, Long> {
 
     Optional<ResetToken> findByToken(String token);
 }

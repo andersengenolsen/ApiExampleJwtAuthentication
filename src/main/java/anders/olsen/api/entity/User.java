@@ -58,6 +58,9 @@ public class User extends CreatedUpdatedAudit {
     @Size(max = 100)
     private String password;
 
+    @Column(name = "is_verified", columnDefinition = "boolean default false", nullable = false)
+    private Boolean isVerified = false;
+
     /**
      * A user can have many roles,
      * which will be mapped in a "many-to-many" table.
@@ -144,5 +147,13 @@ public class User extends CreatedUpdatedAudit {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Boolean getVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(Boolean verified) {
+        isVerified = verified;
     }
 }

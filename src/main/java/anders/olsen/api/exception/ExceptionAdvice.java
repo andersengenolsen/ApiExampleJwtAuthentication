@@ -72,4 +72,15 @@ public class ExceptionAdvice {
                 HttpStatus.BAD_REQUEST
         );
     }
+
+    /**
+     * @return {@link ApiResponse} when {@link HttpMessageNotReadableException} is thrown
+     */
+    @ExceptionHandler(NotVerifiedException.class)
+    public ResponseEntity<ApiResponse> notVerified() {
+        return new ResponseEntity<>(
+                new ApiResponse(false, "Email address not verified", HttpServletResponse.SC_BAD_REQUEST),
+                HttpStatus.BAD_REQUEST
+        );
+    }
 }

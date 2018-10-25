@@ -2,6 +2,7 @@ package anders.olsen.api.security;
 
 
 import anders.olsen.api.entity.User;
+import anders.olsen.api.exception.NotVerifiedException;
 import anders.olsen.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +35,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found!"));
+
+        if(! user.getVerified()) {
+            throw new NotVerifiedException("Email address not verified!");
+        }
 
         return CustomUserPrincipal.create(user);
     }

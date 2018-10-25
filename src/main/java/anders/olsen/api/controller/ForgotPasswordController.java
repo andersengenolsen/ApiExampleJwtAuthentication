@@ -5,7 +5,7 @@ import anders.olsen.api.entity.User;
 import anders.olsen.api.payload.ApiResponse;
 import anders.olsen.api.payload.ResetPassword;
 import anders.olsen.api.payload.ResetRequest;
-import anders.olsen.api.repository.TokenRepository;
+import anders.olsen.api.repository.ResetPasswordTokenRepository;
 import anders.olsen.api.repository.UserRepository;
 import anders.olsen.api.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class ForgotPasswordController {
     /**
      * Accessing tokens
      */
-    private TokenRepository tokenRepository;
+    private ResetPasswordTokenRepository resetPasswordTokenRepository;
 
     /**
      * Password encryption
@@ -71,7 +71,7 @@ public class ForgotPasswordController {
 
         // Generating random reset token, saving to database
         User user = optionalUser.get();
-        Optional<ResetToken> optionalResetToken = tokenRepository.findById(user.getId());
+        Optional<ResetToken> optionalResetToken = resetPasswordTokenRepository.findById(user.getId());
 
         ResetToken resetToken;
 
@@ -82,7 +82,7 @@ public class ForgotPasswordController {
         } else {
             resetToken = new ResetToken(UUID.randomUUID().toString(), user);
         }
-        tokenRepository.save(resetToken);
+        resetPasswordTokenRepository.save(resetToken);
 
 
         // Generating email message
@@ -116,7 +116,7 @@ public class ForgotPasswordController {
                     "must match", HttpServletResponse.SC_BAD_REQUEST));
 
         // Fetching token and user
-        Optional<ResetToken> opt = tokenRepository.findByToken(resetPassword.getToken());
+        Optional<ResetToken> opt = resetPasswordTokenRepository.findByToken(resetPassword.getToken());
 
         // Invalid token, ie. user not found by token
         if (!opt.isPresent() || opt.get().getUser() == null)
@@ -137,7 +137,7 @@ public class ForgotPasswordController {
         userRepository.save(user);
 
         // Deleting token
-        tokenRepository.delete(resetToken);
+        resetPasswordTokenRepository.delete(resetToken);
 
         // return OK
         return ResponseEntity.ok().body(new ApiResponse(true, "Password updated",
@@ -163,7 +163,7 @@ public class ForgotPasswordController {
     }
 
     @Autowired
-    public void setTokenRepository(TokenRepository tokenRepository) {
-        this.tokenRepository = tokenRepository;
+    public void setResetPasswordTokenRepository(ResetPasswordTokenRepository resetPasswordTokenRepository) {
+        this.resetPasswordTokenRepository = resetPasswordTokenRepository;
     }
 }

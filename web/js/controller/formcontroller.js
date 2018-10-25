@@ -146,11 +146,11 @@ define(["controller/apicontroller"], function(ApiController) {
     var registerResult = function(data, success = false) {
         if(data === undefined) {
             DOMString.regError.innerHTML = "Network error occurred";
-            showElement(regError);
+            showElement(DOMString.regError);
         }
         else if(data["status"] != 200) {
             DOMString.regError.innerHTML = data["message"];
-            showElement(regError);
+            showElement(DOMString.regError);
         } else {
             hideElement(DOMString.regError);
             showElement(DOMString.regSuccess);

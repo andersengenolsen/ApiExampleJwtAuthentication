@@ -4,9 +4,15 @@ Can serve as a starter project for APIs with JWT authentication.
 
 The API currently has the following endpoints;
 
-/api/auth/signup - Signing up
+/api/auth/signup - Signing up, receiving verification link by email.
 
 /api/auth/signin - Signing in, returning a JWT bearer token.
+
+/api/auth/verify/{token} - Verifying email by token.
+
+/api/reset - Generating reset password token, sent by mail to user.
+
+/api/reset/newpassword - Setting new password.
 
 /api/user/{username} - Returning summary of a given username, e-mail and id excluded.
 

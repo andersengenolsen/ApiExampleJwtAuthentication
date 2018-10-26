@@ -43,8 +43,9 @@ public class User extends CreatedUpdatedAudit {
 
     /**
      * NaturalId, to perform lookups by email.
+     * Is mutable, since emails can be updated.
      */
-    @NaturalId
+    @NaturalId(mutable = true)
     @NotBlank
     @Size(max = 30)
     @Email

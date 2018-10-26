@@ -1,5 +1,7 @@
 package anders.olsen.api.payload;
 
+import anders.olsen.api.entity.User;
+
 /**
  * Class representing "summary" of a user,
  * does not include audit columns
@@ -11,6 +13,10 @@ public class UserSummary {
     private String firstName;
     private String lastName;
     private String email;
+
+    public UserSummary() {
+
+    }
 
     public UserSummary(Long id, String username,
                        String firstName, String lastName, String email) {
@@ -59,5 +65,13 @@ public class UserSummary {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setUser(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.email = user.getEmail();
     }
 }

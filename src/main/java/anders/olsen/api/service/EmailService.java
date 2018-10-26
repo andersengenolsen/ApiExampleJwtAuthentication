@@ -1,5 +1,6 @@
 package anders.olsen.api.service;
 
+import anders.olsen.api.entity.User;
 import org.springframework.mail.SimpleMailMessage;
 
 /**
@@ -7,5 +8,8 @@ import org.springframework.mail.SimpleMailMessage;
  */
 public interface EmailService {
 
-    public void sendEmail(SimpleMailMessage email);
+    void sendEmail(SimpleMailMessage email);
+
+    void sendVerifyEmail(User user);
+
 }

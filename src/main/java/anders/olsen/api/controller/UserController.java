@@ -9,10 +9,7 @@ import anders.olsen.api.security.CustomUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -58,6 +55,19 @@ public class UserController {
         return new UserSummary(userPrincipal.getId(), userPrincipal.getUsername(),
                 userPrincipal.getFirstName(), userPrincipal.getLastName(),
                 userPrincipal.getEmail());
+    }
+
+    /**
+     * Currently logged in user can update their information.
+     *
+     * @param userPrincipal
+     * @return UserSummary after update.
+     */
+    @PutMapping("/me")
+    @PreAuthorize("hasRole('USER')")
+    public UserSummary updateUserDetails(@CurrentUser CustomUserPrincipal userPrincipal) {
+        // TODO: Update user information
+        return null;
     }
 
 

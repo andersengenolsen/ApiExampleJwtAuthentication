@@ -25,6 +25,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin(maxAge = 3600)
 public class UserController {
 
     /**

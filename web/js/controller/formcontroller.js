@@ -1,5 +1,5 @@
 /* Controller for the forms */
-define(["controller/apicontroller"], function(ApiController) {
+define(["controller/apicontroller", "util/helper"], function(ApiController, Helper) {
 
     // Document Object Model strings.
     const DOMString = {
@@ -24,13 +24,13 @@ define(["controller/apicontroller"], function(ApiController) {
         // Event listener for choices, login / register
         DOMString.loginCh.addEventListener("click", function() {
             switchSelected(DOMString.loginCh);
-            showElement(DOMString.loginForm);
-            hideElement(DOMString.registerForm);
+            Helper.showElement(DOMString.loginForm);
+            Helper.hideElement(DOMString.registerForm);
         });
         DOMString.regCh.addEventListener("click", function() {
             switchSelected(DOMString.regCh);
-            showElement(DOMString.registerForm);
-            hideElement(DOMString.loginForm);
+            Helper.showElement(DOMString.registerForm);
+            Helper.hideElement(DOMString.loginForm);
         });
 
         // Form listeners
@@ -62,7 +62,7 @@ define(["controller/apicontroller"], function(ApiController) {
     var postNewPassword = function(form) {
 
         const formData = new FormData(form);
-        let json = formDataToJson(formData);
+        let json = Helper.formDataToJson(formData);
 
         ApiController.postNewPassword(json, processNewPasswordResult);
     };
@@ -75,7 +75,7 @@ define(["controller/apicontroller"], function(ApiController) {
     var postResetRequest = function(form) {
         const formData = new FormData(form);
         // Converting to JSON
-        let json = formDataToJson(formData);
+        let json = Helper.formDataToJson(formData);
 
         ApiController.requestReset(json, processResetResult);
     };
@@ -95,11 +95,11 @@ define(["controller/apicontroller"], function(ApiController) {
         let errors = (isLogin) ? DOMString.loginError : DOMString.regError;
 
         // Removing error field
-        hideElement(errors);
+        Helper.hideElement(errors);
 
         // FormData object
         const formData = new FormData(form);
-        let json = formDataToJson(formData);
+        let json = Helper.formDataToJson(formData);
 
         if(isLogin)
             ApiController.login(json, loginResult);
@@ -109,7 +109,7 @@ define(["controller/apicontroller"], function(ApiController) {
             if(DOMString.passwordRepeat.value !== DOMString.password.value ||
                DOMString.passwordRepeat.value.length === 0) {
                 errors.innerHTML = "Passwords must match!"
-                showElement(errors);
+                Helper.showElement(errors);
                 return;
             }
             // Passing data to the api controller.            
@@ -125,11 +125,11 @@ define(["controller/apicontroller"], function(ApiController) {
     var loginResult = function(data, success = false) {
         if(data === undefined) {
             DOMString.loginError.innerHTML = "Network error occurred";
-            showElement(DOMString.loginError);
+            Helper.showElement(DOMString.loginError);
         }
         else if(data["status"] != 200) {
             DOMString.loginError.innerHTML = data["message"];
-            showElement(DOMString.loginError);
+            Helper.showElement(DOMString.loginError);
         } else {
             // Can now extract the JWT bearer token, and
             // redirect the user to the users home page!
@@ -146,14 +146,14 @@ define(["controller/apicontroller"], function(ApiController) {
     var registerResult = function(data, success = false) {
         if(data === undefined) {
             DOMString.regError.innerHTML = "Network error occurred";
-            showElement(DOMString.regError);
+            Helper.showElement(DOMString.regError);
         }
         else if(data["status"] != 200) {
             DOMString.regError.innerHTML = data["message"];
-            showElement(DOMString.regError);
+            Helper.showElement(DOMString.regError);
         } else {
-            hideElement(DOMString.regError);
-            showElement(DOMString.regSuccess);
+            Helper.hideElement(DOMString.regError);
+            Helper.showElement(DOMString.regSuccess);
         }
     }
 
@@ -164,10 +164,10 @@ define(["controller/apicontroller"], function(ApiController) {
     var processResetResult = function(data, success = false) {
         if(data == undefined) {
             DOMString.resetMessage.innerHTML = "Network error occurred";
-            showElement(DOMString.resetMessage);
+            Helper.showElement(DOMString.resetMessage);
         } else if(data["status"] != 200) {
             DOMString.resetMessage.innerHTML = data["message"];
-            showElement(DOMString.resetMessage);
+            Helper.showElement(DOMString.resetMessage);
         } else {
             $('#forgotPasswordModal').modal("hide");
             $("#set-password-modal").modal("show");
@@ -185,33 +185,8 @@ define(["controller/apicontroller"], function(ApiController) {
         } else {
             DOMString.newPasswordMessage.innerHTML = data["message"];
         }
-        showElement(DOMString.newPasswordMessage);
-    }
-
-    /*
-     * Helper method, converting FormData JSON.
-     *
-     */
-    var formDataToJson = function(formData) {
-        // Converting to JSON
-        let obj = {};
-        for(const keyvalue of formData.entries()) {
-            obj[keyvalue[0]] = keyvalue[1];
-        }
-
-        return JSON.stringify(obj);
+        Helper.showElement(DOMString.newPasswordMessage);
     };
-
-
-    // Hiding provided element, adding display none if no parameter provided
-    var hideElement = function(el, value = "none") {
-        el.style.display = "none";
-    }
-
-    // Showing provided form, adding display block if no parameter provided
-    var showElement = function(el, value = "block") {
-        el.style.display = value;
-    }
 
     // Switching class of currently selected option, login / register
     var switchSelected = function(currentlySelected) {

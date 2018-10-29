@@ -25,11 +25,26 @@ define(function() {
     var apiRequestWithToken = function(method, url) {
         let req = new XMLHttpRequest();
         req.open(method, url, true);
+        req.setRequestHeader(contentType, contentVal);
         req.setRequestHeader("Authorization",
                              "Bearer " + localStorage.getItem("token"));
-
+        
+        
         return req;
     };
+
+    /*
+     * Updating user info
+     */
+    var updateUser = function(json, callback) {
+        let req = apiRequestWithToken("put", urlUser);
+        req.send(json);
+
+        req.onloadend = function() {
+            let response = JSON.parse(req.responseText);
+            callback(response);
+        }
+    }
 
     /*
      * Returning information about currently logged in user.
@@ -183,11 +198,25 @@ define(function() {
             requestReset(json, callback);
         },
 
+        /*
+         * Posting new password
+         */
         postNewPassword: function(json, callback) {
             if(callback===undefined)
                 console.log("No callback method provided");
 
             postNewPassword(json, callback);
+        },
+
+        /*
+         * Updating user info
+         *
+         */
+        updateUser: function(json, callback) {
+            if(callback === undefined)
+                console.log("No callback provided");
+
+            updateUser(json, callback);
         }
     };
 });
